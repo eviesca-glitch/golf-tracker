@@ -52,8 +52,8 @@ html,body { height:100%; background:var(--black); color:var(--white); font-famil
 .club-chip:active { opacity:.7; }
 
 /* ── CAMERA ── */
-.camera-wrap { position:relative; flex:1; overflow:hidden; background:#000; }
-#liveVideo,#reviewCanvas,#liveCanvas { width:100%;height:100%;object-fit:cover; }
+.camera-wrap { position:relative; flex:1; overflow:hidden; background:#000; min-height:0; min-width:0; }
+#liveVideo,#reviewCanvas,#liveCanvas { width:100%;height:100%;object-fit:cover; display:block; }
 #liveCanvas { position:absolute;top:0;left:0;pointer-events:none; }
 .camera-overlay { position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none; }
 .aim-guide { position:absolute; bottom:30%;left:50%;transform:translateX(-50%); width:60px;height:60px; border:2px solid rgba(0,230,118,.5); border-radius:50%; display:flex;align-items:center;justify-content:center; }
@@ -144,6 +144,50 @@ html,body { height:100%; background:var(--black); color:var(--white); font-famil
 .share-full-btn { width:100%;height:52px;border-radius:14px;border:none;background:#1d9bf0;color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px; }
 .share-full-btn:active { opacity:.8; }
 .hidden { display:none !important; }
+
+/* ── LANDSCAPE MODE ── */
+@media screen and (orientation: landscape) {
+  .view { flex-direction:row; flex-wrap:wrap; }
+
+  .view-header {
+    width:100%;
+    padding:12px 20px;
+    flex-shrink:0;
+  }
+
+  .club-bar { width:100%; flex-shrink:0; }
+
+  .cam-mode-toggle { width:100%; flex-shrink:0; }
+
+  .camera-wrap {
+    flex:1;
+    height:auto;
+    min-height:0;
+  }
+
+  /* Hide stats and controls in landscape — camera takes full remaining space */
+  .stats-panel { display:none; }
+  .controls { 
+    display:flex;
+    flex-direction:column;
+    width:120px;
+    padding:8px;
+    gap:6px;
+    height:100%;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .btn { height:40px; font-size:11px; }
+  .history-strip { display:none !important; }
+  .avg-row { display:none; }
+
+  /* Compact header in landscape */
+  .view-header { padding:8px 16px; }
+  .view-title { font-size:14px; }
+
+  /* Upload zone full height in landscape */
+  .upload-zone { height:100%; }
+}
 </style>
 </head>
 <body>
@@ -195,7 +239,7 @@ html,body { height:100%; background:var(--black); color:var(--white); font-famil
   <div class="club-bar" id="liveClubBar"></div>
 
   <!-- Camera mode toggle -->
-  <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;">
+  <div class="cam-mode-toggle" style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;">
     <div id="modeBehind" onclick="setCamMode('behind')" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;background:var(--green);color:#000;transition:all .15s;">⬆ BEHIND</div>
     <div id="modeSide" onclick="setCamMode('side')" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;background:var(--panel);color:var(--gray);border-left:1px solid var(--border);transition:all .15s;">➡ SIDE-ON</div>
   </div>
@@ -254,7 +298,7 @@ html,body { height:100%; background:var(--black); color:var(--white); font-famil
 
   <div class="club-bar" id="reviewClubBar"></div>
 
-  <div style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;">
+  <div class="cam-mode-toggle" style="display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;">
     <div id="rvModeBehind" onclick="setReviewCamMode('behind')" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;background:var(--green);color:#000;transition:all .15s;">⬆ BEHIND</div>
     <div id="rvModeSide" onclick="setReviewCamMode('side')" style="flex:1;padding:8px;text-align:center;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;background:var(--panel);color:var(--gray);border-left:1px solid var(--border);transition:all .15s;">➡ SIDE-ON</div>
   </div>
