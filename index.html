@@ -103,6 +103,12 @@ html,body { height:100%; background:var(--black); color:var(--white); font-famil
 }
 .shot-hud.show { opacity: 1; }
 .shot-hud.fade { opacity: 0; }
+.shot-hud.flash { animation: hud-flash 0.5s ease; }
+@keyframes hud-flash {
+  0% { opacity: 0; transform: scale(0.95); }
+  60% { opacity: 1; transform: scale(1.03); }
+  100% { opacity: 1; transform: scale(1); }
+}
 
 .hud-box {
   background: rgba(0,0,0,0.75);
@@ -1017,20 +1023,16 @@ function showLiveResult(result) {
   stopLiveTracking();
   addShot(result);
 
-  // ── Update HUD overlay on camera ──
+  // ── Update HUD overlay on camera — stays until next shot ──
   const hud = document.getElementById('liveHud');
   document.getElementById('hudCarry').textContent = result.carry;
   document.getElementById('hudSpeed').textContent = result.speed;
   document.getElementById('hudLaunch').textContent = result.launch;
   document.getElementById('hudClub').textContent = selectedClub.toUpperCase();
-  hud.classList.remove('fade');
-  hud.classList.add('show');
-  // Auto-fade after 6 seconds
-  if (window._hudTimer) clearTimeout(window._hudTimer);
-  window._hudTimer = setTimeout(() => {
-    hud.classList.add('fade');
-    setTimeout(() => hud.classList.remove('show','fade'), 400);
-  }, 6000);
+  // Brief flash animation to signal new shot, then stays visible
+  hud.classList.remove('show','fade','flash');
+  void hud.offsetWidth; // force reflow
+  hud.classList.add('show','flash');
 
   document.getElementById('liveCarry').textContent = result.carry;
   document.getElementById('liveSpeed').textContent = result.speed;
